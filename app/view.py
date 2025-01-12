@@ -53,7 +53,9 @@ class View(ttk.Window):
         )
         btn_browse.pack(side=LEFT, padx=12)
 
-        form_input = ttk.Entry(master=browser_frame, textvariable=self.file_name)
+        form_input = ttk.Entry(
+            master=browser_frame, textvariable=self.file_name, font=("Consolas", 10)
+        )
         form_input.pack(side=LEFT, padx=5, fill=X, expand=YES)
 
         self.content_frame = ttk.Frame(self.home_frame)

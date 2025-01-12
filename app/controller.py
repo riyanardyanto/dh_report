@@ -80,7 +80,9 @@ class Controller(CTRL):
         try:
             for child in self.view.content_frame.winfo_children():
                 child.destroy()
-            self.displayBox = ttk.Text(self.view.content_frame, width=100, height=30)
+            self.displayBox = ttk.Text(
+                self.view.content_frame, width=100, height=30, font=("Consolas", 10)
+            )
             self.displayBox.pack(side=LEFT, fill=X, expand=False, padx=(5, 5), pady=5)
 
             # QR Code
