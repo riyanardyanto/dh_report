@@ -2,6 +2,7 @@ import os
 import sys
 
 import pandas as pd
+import tabulate
 
 
 def get_concate_df(text: str) -> pd.DataFrame:
@@ -38,7 +39,8 @@ def createDHReport(df: pd.DataFrame):
         DH_detail.rename(
             columns={"WORK CENTER TYPE": "WORK CENTER", 0: value}, inplace=True
         )
-        return f"`{str(DH_detail.to_markdown(tablefmt='pipe', index=False)).replace('\n', '`\n`')}`"
+        return f"`{str(tabulate.tabulate(DH_detail, headers='keys', tablefmt='psql', showindex=False)).replace('\n', '`\n`')}`"
+        # return f"`{str(DH_detail.to_markdown(tablefmt='pipe', index=False)).replace('\n', '`\n`')}`"
 
     # DH FOUND
     df_total = df
@@ -64,7 +66,6 @@ def createDHReport(df: pd.DataFrame):
     detail_soc = get_detail_DH(df_soc, "DH SOC")
 
     # open
-    is_exist = False
     try:
         df_open = df.loc[df["STATUS"].isin(["OPEN"])][
             ["NUMBER", "DESCRIPTION", "PRIORITY"]
@@ -98,7 +99,7 @@ def createDHReport(df: pd.DataFrame):
     except:
         str_high = ""
 
-    return f"{period}\n\n*DH FOUND DURING CIL*: {total_found_cil}\n{detail_found_cil}\n\n*DH FOUND*: {total_found}\n{detail_found}\n\n*DH FIX (CLOSED)*: {total_close}\n{detail_close}\n\n*DH SOC*: {total_soc}\n{detail_soc}\n\n**DH OPEN*: {len(data_open)}\n{str_open}\n*DH HIGH*: {len(data_high)}\n{str_high}"
+    return f"{period}\n\n*DH FOUND DURING CIL*: {total_found_cil}\n{detail_found_cil}\n\n*DH FOUND*: {total_found}\n{detail_found}\n\n*DH FIX (CLOSED)*: {total_close}\n{detail_close}\n\n*DH SOC*: {total_soc}\n{detail_soc}\n\n*DH OPEN*: {len(data_open)}\n{str_open}\n*DH HIGH*: {len(data_high)}\n{str_high}"
 
 
 def createText(df: pd.DataFrame) -> str:

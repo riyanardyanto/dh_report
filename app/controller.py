@@ -9,6 +9,8 @@ from ttkbootstrap.constants import *
 
 from app.baseClass import CTRL
 from app.helper import createDHReport, get_concate_df
+
+# from app.helper import get_concate_df
 from app.model import Model
 from app.view import View
 
@@ -90,7 +92,7 @@ class Controller(CTRL):
             self.qrLabel.pack(side=LEFT, fill=X, expand=False, padx=(5, 5), pady=5)
 
             self.displayBox.delete("0.0", "200.0")
-            text = self.view.file_name.get()
+            # text = self.view.file_name.get()
             # self.pathBox.insert("0.0", text)
             extract_text = createDHReport(self.view.df)
             self.displayBox.insert("0.0", extract_text)
@@ -123,4 +125,5 @@ class Controller(CTRL):
         return img
 
     def run(self) -> None:
+        self.view.mainloop()
         self.view.mainloop()
