@@ -58,12 +58,27 @@ def createDHReport(df: pd.DataFrame):
     detail_close = get_detail_DH(df_close, "CLOSED")
 
     # DH SOC
-    df_soc = df.loc[df["DEFECT TYPES"].str.contains("SOURCE_OF_CONTAMINATION")]
-    total_soc = len(df_soc)
+    # df_soc = df.loc[df["DEFECT TYPES"].str.contains("SOURCE_OF_CONTAMINATION")]
+    df_soc_found = df_total.loc[
+        df_total["DEFECT TYPES"].str.contains("SOURCE_OF_CONTAMINATION")
+    ]
+    df_soc_fix = df_close.loc[
+        df_close["DEFECT TYPES"].str.contains("SOURCE_OF_CONTAMINATION")
+    ]
+
+    soc = {"FOUND": len(df_soc_found), "FIX": len(df_soc_fix)}
+    # len_dh_soc_found = len(df_soc_found)
+    # len_dh_soc_fix = len(df_soc_fix)
+
+    df_soc = pd.DataFrame.from_dict(soc, orient="index")
+
+    print(df_soc)
+
+    total_soc = len(df_soc_found)
     # for item in df["DEFECT TYPES"].values.tolist():
     #     if "SOURCE_OF_CONTAMINATION" in item:
     #         total_soc += 1
-    detail_soc = get_detail_DH(df_soc, "DH SOC")
+    detail_soc = f"`{str(tabulate.tabulate(df_soc, headers=['STATUS     ', ' COUNT'], tablefmt='psql', showindex=True)).replace('\n', '`\n`')}`"
 
     # open
     try:
@@ -99,7 +114,7 @@ def createDHReport(df: pd.DataFrame):
     except:
         str_high = ""
 
-    return f"{period}\n\n*DH FOUND DURING CIL*: {total_found_cil}\n{detail_found_cil}\n\n*DH FOUND*: {total_found}\n{detail_found}\n\n*DH FIX (CLOSED)*: {total_close}\n{detail_close}\n\n*DH SOC*: {total_soc}\n{detail_soc}\n\n*DH OPEN*: {len(data_open)}\n{str_open}\n*DH HIGH*: {len(data_high)}\n{str_high}"
+    return f"{period}\n\n*DH FOUND DURING CIL*: {total_found_cil}\n{detail_found_cil}\n\n*DH FOUND*: {total_found}\n{detail_found}\n\n*DH FIX (CLOSED)*: {total_close}\n{detail_close}\n\n*DH SOC*: \n{detail_soc}\n\n*DH OPEN*: {len(data_open)}\n{str_open}\n*DH HIGH*: {len(data_high)}\n{str_high}"
 
 
 def createText(df: pd.DataFrame) -> str:
